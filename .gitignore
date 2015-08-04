@@ -2,3 +2,9 @@
 /build/
 *~
 #*
+Makefile
+TAGS
+GPATH
+GTAGS
+GRTAGS
+GSYMS
