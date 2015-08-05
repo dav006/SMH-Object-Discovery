@@ -4,6 +4,12 @@
 #
 REL_CMDPATH=`dirname $0`
 ABS_CMDPATH=`pwd`
+
+if [[ $REL_CMDPATH == "." ]]
+then
+    REL_CMDPATH=""
+fi
+
 ABS_CMDPATH=$ABS_CMDPATH/$REL_CMDPATH
 
 DATAPATH=`dirname $ABS_CMDPATH`
