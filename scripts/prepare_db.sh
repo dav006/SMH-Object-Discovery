@@ -2,18 +2,35 @@
 #
 # Script to download and preprocess the oxford buildings dataset
 #
-REL_CMDPATH=`dirname $0`
-ABS_CMDPATH=`pwd`
+DATAPATH=`pwd`/data/oxford
 
-if [[ $REL_CMDPATH == "." ]]
+if [ ! -a $DATAPATH/images ]
 then
-    REL_CMDPATH=""
+    mkdir -p $DATAPATH/images
 fi
+echo "Downloading images of the Oxford Buildings Dataset"
+curl -L http://www.robots.ox.ac.uk/~vgg/data/oxbuildings/oxbuild_images.tgz | tar -xvz -C $DATAPATH/images
 
-ABS_CMDPATH=$ABS_CMDPATH/$REL_CMDPATH
+if [ ! -a $DATAPATH/features ]
+then
+    mkdir -p $DATAPATH/features
+fi
+echo "Downloading features of the Oxford Buildings Dataset"
+curl -L http://www.robots.ox.ac.uk/~vgg/data/oxbuildings/feat_oxc1_hesaff_sift.bin.tgz | tar xvz
 
-DATAPATH=`dirname $ABS_CMDPATH`
-DATAPATH=$DATAPATH/data/oxford
+if [ ! -a $DATAPATH/words ]
+then
+    mkdir -p $DATAPATH/words
+fi
+echo "Downloading words of the Oxford Buildings Dataset"
+curl -L http://www.robots.ox.ac.uk/~vgg/data/oxbuildings/word_oxc1_hesaff_sift_16M_1M.tgz | tar xvz -C $DATAPATH/words
+
+if [ ! -a $DATAPATH/groundtruth ]
+then
+    mkdir -p $DATAPATH/groundtruth
+fi
+echo "Downloading groundtruth of the Oxford Buildings Dataset"
+curl -L http://www.robots.ox.ac.uk/~vgg/data/oxbuildings/gt_files_170407.tgz | tar xvz -C $DATAPATH/groundtruth
 
 echo "Generating index"
 
