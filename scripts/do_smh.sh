@@ -2,18 +2,7 @@
 #
 # Script to perform Sampled Min-Hashing on a given dataset
 #
-REL_CMDPATH=`dirname $0`
-ABS_CMDPATH=`pwd`
-
-if [[ $REL_CMDPATH == "." ]]
-then
-    REL_CMDPATH=""
-fi
-
-ABS_CMDPATH=$ABS_CMDPATH/$REL_CMDPATH
-
-DATAPATH=`dirname $ABS_CMDPATH`
-DATAPATH=$DATAPATH/data/oxford
+DATAPATH=`pwd`/data/oxford
 
 smhcmd ifindex $DATAPATH/corpus.txt $DATAPATH/ifindex
 smhcmd mine $DATAPATH/ifindex.txt $DATAPATH/mined.txt
