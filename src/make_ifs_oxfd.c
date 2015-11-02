@@ -103,7 +103,7 @@ ListDB make_oxfd_corpus(char *filelist)
                     fprintf(stderr,"Could not read id = %d x = %lf, y = %lf a = %lf, b = %lf, c = %lf from %s\n", id, x, y, a, b, c, files[i]);
                     continue;
                } else {
-                    Item item = {id, 1};
+                    Item item = {id - 1, 1};
                     list_push(&corpus.lists[i], item);
                }
           }
@@ -124,13 +124,15 @@ ListDB make_oxfd_corpus(char *filelist)
  */
 int main(int argc, char *argv[])
 {
-     if (argc < 3) {
-          printf("Missing arguments make_ifs_oxfd FILE_WITH_LIST_OF_WORD_FILES CORPUS_FILE");
+     if (argc < 4) {
+          printf("Missing arguments make_ifs_oxfd FILE_WITH_LIST_OF_WORD_FILES CORPUS_FILE INVERTED_FILE");
           exit(-1);
      }
      
      ListDB corpus = make_oxfd_corpus(argv[1]);
      listdb_save_to_file(argv[2], &corpus);
+     ListDB ifindex = ifindex_make_from_corpus(&corpus);
+     listdb_save_to_file(argv[3], &ifindex);
      
      return 0;
 }
