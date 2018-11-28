@@ -9,3 +9,10 @@ GPATH
 GTAGS
 GRTAGS
 GSYMS
+gt_files_170407/
+word_oxc1_hesaff_sift_16M_1M/
+SMH/allObjetsRankingFile.pickle
+SMH/indexToFile.pickle
+SMH/oxford.corpus
+SMH/oxford.ifs
+SMH/oxford.models
