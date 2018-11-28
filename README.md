@@ -8,15 +8,19 @@ Downloads:
 Pre-requisits:
 1. Follow instructions to build and install SMH https://github.com/gibranfp/Sampled-MinHashing
 2. Modify the following files in SMH:
-      a) smh_api.i add:
+      1. smh_api.i add:
+            ```c
             %include sampledmh.i
-      b) smh.py add prunning:
-            add prune (Boolean) atribute in class SMHDiscoverer
-            add argument for prune in class init
-            modify fit:
+            ```
+      2. smh.py add prunning:
+            1. add prune (Boolean) atribute in class SMHDiscoverer
+            2. add argument for prune in class init
+            3. modify fit:
+                  ```python
                   mined = self.mine(listdb, weights = weights, expand = expand)
                   if self.prune:
                         sa.sampledmh_prune(listdb.ldb,mined.ldb,3,3,0.7,0.8)
+                  ```
 3. Re-build and install
 
 Instructions:
