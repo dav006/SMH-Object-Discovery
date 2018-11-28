@@ -16,8 +16,6 @@
 import os
 from config import Config
 
-globalFrecuency = {}
-totalVisualWords = 0
 stopWords = set()
 
 allWordToFreq = []
@@ -43,35 +41,50 @@ for file in sorted(os.listdir(Config.WORD_ID_FOLDER+'.')):
 
 	allWordToFreq.append(wordToFreq)
 
-print('Get global frecuencies')
-# Get global frecuencies
+print('Get global count')
+# Get global count
+globalCount = {}
 for wordToFreq in allWordToFreq:
 	for wordId in wordToFreq:
-		if wordId not in globalFrecuency:
-			globalFrecuency[wordId] = 1
+		if wordId not in globalCount:
+			globalCount[wordId] = 1
 		else:
-			globalFrecuency[wordId] += 1
-		totalVisualWords+=1
+			globalCount[wordId] += 1
 
 
-minFreq = Config.STOPWORD_MIN_FREQ_PER*totalVisualWords
-maxFreq = Config.STOPWORD_MAX_FREQ_PER*totalVisualWords
-print('Min frecuency : {} and Max frecuency : {}'.format(minFreq,maxFreq))
-for key,value in globalFrecuency.items():
-	if value < minFreq:
+minCount = 5
+maxCount = 1519
+#print('Min frecuency : {} and Max frecuency : {}'.format(minFreq,maxFreq))
+addStop = 0
+for key,value in globalCount.items():
+	if value < minCount:
 		stopWords.add(key)
-	elif value > maxFreq:
+		addStop+=1
+	elif value > maxCount:
 		stopWords.add(key)
+		addStop+=1
+print('Stop words : {}'.format(addStop))
+
+countVis = 0
+for wordToFreq in allWordToFreq:
+	countVis+=len(wordToFreq)
+print('Visual words before stop words : {}'.format(countVis))
 
 #Remove stop words
 print('Remove stop words')
+allWordToFreqNoStop = []
 for wordToFreq in allWordToFreq:
-	wordToFreq = wordToFreq.difference(stopWords)
+	allWordToFreqNoStop.append(wordToFreq.difference(stopWords))
+
+countVis = 0
+for wordToFreq in allWordToFreqNoStop:
+	countVis+=len(wordToFreq)
+print('Visual words after stop words : {}'.format(countVis))
 
 #Remove stop words
 print('Save binary BoW without stopWords')
 outputFile = open(Config.CORPUS_FILE,'w')
-for wordToFreq in allWordToFreq:
+for wordToFreq in allWordToFreqNoStop:
 	#Write the dictionary in the default format
 	outputFile.write(str(len(wordToFreq)))
 	for wordId in wordToFreq:
