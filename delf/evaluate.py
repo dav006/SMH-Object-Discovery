@@ -9,7 +9,6 @@ from config import Config
 objectsRankingFile = 'allObjetsRankingFile.pickle'
 
 model = smh.listdb_load(Config.MODEL_FILE)
-print(model.size())
 ifs = smh.listdb_load(Config.INVERT_INDEX_FILE)
 allObjetsToFileRanked = []
 with open(objectsRankingFile, 'rb') as handle:
@@ -38,7 +37,6 @@ print('Size of allGroundTruthImages: {}'.format(len(allGroundTruthImages)))
 allObjetsAP = []
 averageAP = 0.0
 for key, value in allGroundTruthImages.iteritems():
-	print('Name of ground truth: {}'.format(key))
 	maxAP = -1
 	positiveImages = float(len(value))
 	for objectToFile in allObjetsToFileRanked:
@@ -63,7 +61,7 @@ for key, value in allGroundTruthImages.iteritems():
 			pyplot.xlabel('Recall')
 			pyplot.show()
 			'''
-	print('Best AP: {}'.format(maxAP))
+	print('Best AP for {} : {}'.format(key,maxAP))
 	averageAP+=maxAP
 print('Average AP: {}'.format(averageAP/11.0))
 		

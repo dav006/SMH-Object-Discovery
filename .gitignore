@@ -16,3 +16,10 @@ SMH/indexToFile.pickle
 SMH/oxford.corpus
 SMH/oxford.ifs
 SMH/oxford.models
+delf/allObjetsRankingFile.pickle
+delf/indexToFile.pickle
+delf/oxford.corpus
+delf/oxford.ifs
+delf/oxford.models
+delf/vector.pkl
+test_features/

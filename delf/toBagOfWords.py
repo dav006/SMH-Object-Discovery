@@ -2,23 +2,26 @@ from sklearn.cluster import MiniBatchKMeans
 from delf import feature_io
 import os
 from config import Config
-from sklearn.externals import joblib
 import numpy as np
+import pickle
 
 stopWords = set()
 
 inputpath = '../test_features/'
-mkm = joblib.load('vocabulario.pkl')
+mkm = pickle.load(open('30000/vector30000_10iter.pkl', 'rb'))
 
 #Convert DELF descriptors to visual words for each delf file
 print('Convert DELF')
 filelist = sorted(os.listdir(inputpath+'.'))
 allVisualWords = []
+count = 0
 for entry in filelist:
 	_, _, descriptors, _, _ = feature_io.ReadFromFile(inputpath+entry)
 	npArray = mkm.predict(descriptors).flatten()
 	visualwords = set(npArray)
 	allVisualWords.append(visualwords)
+	count+=1
+	print(count)
 
 print('Get global count')
 # Get global count
