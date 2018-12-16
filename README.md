@@ -5,4 +5,4 @@ The repository contains various methods for object discovery. The methods and in
 
 ## Methods
 1. SMH with SIFT descriptors : [Instructions](SMHandSIFT.md)
-2. GRU con Glove Embeddings : [Instrucciones](SMHandDELF.md)
+2. SMH with DELF descriptors : [Instrucciones](SMHandDELF.md)
