@@ -1,3 +1,4 @@
+
 /**
  * @pfile make_ifs_oxfd.c 
  * @author Gibran Fuentes Pineda <gibranfp@turing.iimas.unam.mx>
@@ -19,6 +20,7 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
+#include <dirent.h>
 #include <string.h>
 #include <math.h>
 
@@ -32,52 +34,22 @@
  *        
  * @return Database of bags-of-features
  */
-ListDB make_oxfd_corpus(char *filelist)
+ListDB make_oxfd_corpus(char *dirpath)
 {
-     char **files = NULL;
+     DIR *dir = opendir(dirpath);
+     struct dirent *dp;
+     char files[5062][1000];
+     int number_of_files = 0;
      FILE *pfile;
-
-     // reads lists of files
-     if (!(pfile = fopen(filelist,"r"))){
-          fprintf(stderr,"Could not read file %s. Aborting . . .\n", filelist);
-          abort();
-     }
-
-     char *line = NULL;
-     size_t len = 0;
-     size_t read;
-     uint number_of_files = 0;
-     while (read = getline (&line, &len, pfile) != -1) {
-          files = realloc(files, (number_of_files + 1) * sizeof(char *));
-          if (files == NULL){
-               free(files);
-               fprintf(stderr,"Could not allocate memory for image list %s\n", filelist);
-               abort();
-          }
-
-          files[number_of_files] = (char *) malloc((strlen(line) - 1) * sizeof(char));
-          line[strlen(line) - 1] = '\0';
-          strcpy(files[number_of_files], line);
-          
-          if (ferror(pfile)) {
-               fprintf(stderr,"Error reading stdin!\n");
-               abort();
-          }
-
-          free(line);
-          line = NULL;
-          len = 0;
-          
-          number_of_files++;
-     }
      
-     // reads lists of files
-     if (fclose(pfile)){
-          free(files);
-          fprintf(stderr,"Could not close file %s. Aborting . . .\n", filelist);
-          abort();
+     while ((dp = readdir(dir)) != NULL) {
+          if (strcmp(dp->d_name, ".") != 0 && strcmp(dp->d_name, "..") != 0) {
+               strcpy (files[number_of_files], dirpath);
+               strcat (files[number_of_files], "/");
+               strcat (files[number_of_files], dp->d_name);
+               number_of_files++;
+          }
      }
-
 
      ListDB corpus = listdb_create(number_of_files, VOCABULARY_SIZE);
      uint i;
@@ -128,8 +100,8 @@ int main(int argc, char *argv[])
           printf("Missing arguments make_ifs_oxfd FILE_WITH_LIST_OF_WORD_FILES CORPUS_FILE INVERTED_FILE");
           exit(-1);
      }
-     
-     ListDB corpus = make_oxfd_corpus(argv[1]);
+
+     ListDB corpus = make_oxfd_corpus(argv[1]);     
      listdb_save_to_file(argv[2], &corpus);
      ListDB ifindex = ifindex_make_from_corpus(&corpus);
      listdb_save_to_file(argv[3], &ifindex);
