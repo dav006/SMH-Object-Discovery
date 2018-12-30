@@ -10,7 +10,7 @@ stopWords = set()
 inputpath = '../../oxford5k_features_attention/'
 # Reiniting, loading the index
 p = hnswlib.Index(space='l2', dim=40)
-p.load_index("10000/hsm_10000_30iter.bin", max_elements = 10000)
+p.load_index("150000/hsm_150000_30iter.bin", max_elements = 150000)
 
 #Convert DELF descriptors to visual words for each delf file
 print('Convert DELF')
